@@ -22,7 +22,7 @@ void LedController::begin(int mcp_cs_pin) {
   this->_initialize_mcp(mcp_cs_pin);
   this->_initialize_cube_pins();
 
-  this->_test_cube();
+  //this->_test_cube();
 }
 
 void LedController::_test_cube() {
@@ -97,12 +97,23 @@ void LedController::_initialize_cube_pins() {
 
 void LedController::_initialize_mcp(int mcp_cs_pin) {
   pinMode(this->_reset_pin, OUTPUT);
+  pinMode(this->_speaker_pin, OUTPUT);
   digitalWrite(this->_reset_pin, LOW);
-  delay(100);
+//   delay(100);
   digitalWrite(this->_reset_pin, HIGH);
   if (!(this->mcp.begin_SPI(mcp_cs_pin))) {
     while (1) {
       Serial.println("Error.");
     }
   }
+}
+
+void LedController::play_music() {
+    const int * music = this->_music;
+    for (int music_index = 0; music_index < this->music_notes * 2; music_index += 2) {
+        music = this->_music + music_index;
+        tone(this->_speaker_pin, music[0], music[1]*1.3);
+
+        delay(music[1]);
+    }
 }

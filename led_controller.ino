@@ -8,6 +8,7 @@ void setup() {
   while(!Serial);
   Serial.println("LED Cube test");
   led_controller.begin(mcp_cs_pin);
+  led_controller.play_music();
 }
 
 void loop() {
